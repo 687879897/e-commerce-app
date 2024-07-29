@@ -75,7 +75,7 @@ class CartDM {
 }
 
 
-class Product {
+class ProductDm {
   List<Subcategory>? subcategory;
   String? sId;
   String? title;
@@ -86,7 +86,7 @@ class Product {
   double? ratingsAverage;
   String? id;
 
-  Product(
+  ProductDm(
       {this.subcategory,
         this.sId,
         this.title,
@@ -97,7 +97,7 @@ class Product {
         this.ratingsAverage,
         this.id});
 
-  Product.fromJson(Map<String, dynamic> json) {
+  ProductDm.fromJson(Map<String, dynamic> json) {
     if (json['subcategory'] != null) {
       subcategory = <Subcategory>[];
       json['subcategory'].forEach((v) {

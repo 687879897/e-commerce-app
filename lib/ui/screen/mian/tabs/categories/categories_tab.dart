@@ -6,10 +6,10 @@ import '../../../../../model/brand-response.dart';
 import '../../../../../model/brandrespone.dart';
 import '../../../../base/enums/base-screen-state.dart';
 import '../../../../utils/app_color.dart';
-import '../../../../widgets/catogry-tab.dart';
 import '../../../../widgets/error_view.dart';
 import '../../../../widgets/loading_widget.dart';
-import '../../../../widgets/tabwidget.dart';
+import '../../../../widgets/main_widget/catogry-tab.dart';
+import '../../../../widgets/main_widget/tabwidget.dart';
 import 'categories-viewmodel.dart';
 
 class CategoriesTab extends StatefulWidget {

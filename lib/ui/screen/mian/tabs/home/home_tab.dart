@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:e_commerce_friday_c9/ui/utils/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../di.dart';
@@ -7,10 +6,11 @@ import '../../../../../model/catogry-response.dart';
 
 import '../../../../../model/prouductresponse.dart';
 import '../../../../base/enums/base-screen-state.dart';
-import '../../../../widgets/catogry.dart';
+import '../../../../utils/app_color.dart';
 import '../../../../widgets/error_view.dart';
 import '../../../../widgets/loading_widget.dart';
-import '../../../../widgets/product.dart';
+import '../../../../widgets/main_widget/catogry.dart';
+import '../../../../widgets/main_widget/product.dart';
 import 'home-state.dart';
 import 'home_view_model.dart';
 

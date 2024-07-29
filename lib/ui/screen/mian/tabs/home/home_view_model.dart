@@ -12,7 +12,7 @@ import 'home-state.dart';
 class HomeViewModel extends Cubit<HomeState> {
   final MainRepo mainRepo;
   final CartRepo cartRepo;
-  CartDM? latestcart;
+  // CartDM? latestcart;
 
   HomeViewModel(this.mainRepo, this.cartRepo) : super(HomeState());
 

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../../di.dart';
 import '../../../base/base-state/base-state.dart';
 import '../../../base/enums/base-screen-state.dart';
-import '../../../utils/app_assets.dart';
-import '../../../utils/app_color.dart';
+
+
+import '../../../../model/user-data.dart';
 import '../../../utils/dialog_utils.dart';
-import '../../../widgets/custom_button.dart';
-import '../../../widgets/custom_text_form_field.dart';
-import '../../../widgets/customtextbodyauth.dart';
-import '../../../widgets/customtexttitleauth.dart';
-import '../../../widgets/form_label.dart';
-import '../../../widgets/logoauth..dart';
+import '../../../widgets/auth_widget/custom_text_form_field.dart';
+import '../../../widgets/auth_widget/customtexttitleauth.dart';
+import '../../../widgets/auth_widget/form_label.dart';
+import '../../../widgets/main_widget/custom_button.dart';
 import '../../mian/main.dart';
-import '../register/Register.dart';
 import 'login-view-model.dart';
 
 class Login extends StatelessWidget {
@@ -28,12 +27,16 @@ class Login extends StatelessWidget {
         if (state.state == BaseScreenState.loading) {
           showLoading(context);
           hideLoading(context);
-        }
-        if (state.state == BaseScreenState.failuer) {
-          showErrorDialog(context, "failuer");
-        }
-        if (state.state == BaseScreenState.success) {
-          Navigator.pushReplacementNamed(context, Main.routeName);
+        } else if (state.state == BaseScreenState.failuer) {
+          showErrorDialog(context, "failure");
+        } else if (state.state == BaseScreenState.success) {
+          UserData user = UserData(
+            email: viewModel.emailController.text,
+            passsword: viewModel.passwordController.text,
+            name: 'Fetched Name',
+            phone: 'Fetched Phone',
+          );
+          Navigator.pushReplacementNamed(context, Main.routeName, arguments: user);
         }
       },
       child: Scaffold(
@@ -42,8 +45,7 @@ class Login extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                SizedBox(height: 30),
-                const LogoAuth(),
+                SizedBox(height: 30,),
                 const SizedBox(height: 20),
                 const CustomTextTitleAuth(text: "Welcome Back"),
                 const SizedBox(height: 10),
@@ -56,23 +58,23 @@ class Login extends StatelessWidget {
                       FormLabelWidget(label: 'Email Address'),
                       const SizedBox(height: 24),
                       CustomTextFormField(
-                        iconData: Icons.email_outlined,
-                        labeltext: "Email",
-                        controller: viewModel.emailController,
-                        hintText: 'enter your email address',
-                        validator: (text) {
-                          if (text == null || text.trim().isEmpty) {
-                            return 'Please enter email';
-                          }
-                          var emailValid = RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                              .hasMatch(text);
-                          if (!emailValid) {
-                            return 'Email format is not valid';
-                          }
-                          return null;
-                        },
-                        type: TextInputType.emailAddress,
+                          iconData: Icons.email_outlined,
+                          labeltext: "Email",
+                          controller: viewModel.emailController,
+                          hintText: 'enter your email address',
+                          validator: (text) {
+                            if (text == null || text.trim().isEmpty) {
+                              return 'Please enter email';
+                            }
+                            var emailValid = RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(text);
+                            if (!emailValid) {
+                              return 'Email format is not valid';
+                            }
+                            return null;
+                          },
+                          type: TextInputType.emailAddress
                       ),
                       const SizedBox(height: 32),
                       FormLabelWidget(label: 'Password'),
@@ -98,16 +100,16 @@ class Login extends StatelessWidget {
                       InkWell(
                         onTap: () {},
                         child: Align(
-                          alignment: Alignment.centerRight,
-                          child: FormLabelWidget(label: 'Forget Password'),
+                            alignment: Alignment.centerRight,
+                            child: FormLabelWidget(label: 'Forget Password')
                         ),
                       ),
                       const SizedBox(height: 30),
                       CustomButtonWidget(
-                        title: 'Login',
-                        onPressed: () {
-                          viewModel.login();
-                        },
+                          title: 'Login',
+                          onPressed: () {
+                            viewModel.login();
+                          }
                       ),
                       const SizedBox(height: 16),
                       Row(
@@ -116,7 +118,7 @@ class Login extends StatelessWidget {
                           FormLabelWidget(label: "Don't have an account ? "),
                           InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, Register.routeName);
+                              // Navigator.pushNamed(context, Register.routeName);
                             },
                             child: FormLabelWidget(label: 'Create Account'),
                           ),
