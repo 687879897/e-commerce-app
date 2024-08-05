@@ -46,7 +46,6 @@ class CatogryTab extends StatelessWidget {
                 const SizedBox(height: 80),
                 MaterialButton(
                   onPressed: () {
-                    // Action for "Shop Now" button
                   },
                   color: AppColors.primaryColor, // Blue background color
                   textColor: Colors.white,

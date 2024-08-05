@@ -1,10 +1,19 @@
-class ProductDetailsModel{
-  double price;
-  String descraption;
+class ProductDetailsModel {
+  int price;
+  String description;
   String name;
-  String image;
+  List<String> images;
   double rating;
   int stock;
+  String id;
 
-  ProductDetailsModel({required this.name,required this.descraption,required this.image,required this.price,required this.rating,required this.stock});
+  ProductDetailsModel({
+    required this.name,
+    required this.description,
+    required this.images,
+    required this.price,
+    required this.rating,
+    required this.stock,
+    required this.id,
+  });
 }

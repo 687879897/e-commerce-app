@@ -1,8 +1,10 @@
 
 
+
 import '../../model/brand-response.dart';
 import '../../model/brandrespone.dart';
 import '../../model/catogry-response.dart';
+import '../../model/get-product-response.dart';
 import '../../model/prouductresponse.dart';
 
 abstract class MainRepo{
@@ -10,5 +12,6 @@ abstract class MainRepo{
   Future<List<Products>> getprouduct();
   Future<List<Data>> getallbrand();
   Future<List<Dm>> getbrand();
+  Future<List<ProductDM>> getProduct();
 
 }

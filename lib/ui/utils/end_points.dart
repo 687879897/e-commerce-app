@@ -7,6 +7,7 @@ abstract class EndPoints {
   static String cart = "$baseUrl/api/v1/cart";
   static String brand = "$baseUrl/api/v1/categories";
   static String specifocbrand = "$baseUrl/api/v1/brands";
+  static String productsonhome="$baseUrl/api/v1/products";
 
 
 

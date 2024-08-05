@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:e_commerce_friday_c9/model/brand-response.dart';
+import 'package:e_commerce_friday_c9/model/get-product-response.dart';
 import 'package:e_commerce_friday_c9/model/prouductresponse.dart';
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
@@ -98,6 +99,32 @@ class MainRepoImpl extends MainRepo {
           specificBrandResponse  brandResponse = specificBrandResponse.fromJson(jsonDecode(response.body));
           if (brandResponse.data != null) {
             return brandResponse.data!;
+          } else {
+            throw Constants.defaultErrorMessage!;
+          }
+        } else {
+          throw Constants.defaultErrorMessage!;
+        }
+      }
+      else {
+        throw Constants.internetErrorMessage!;
+      }
+    } catch (e) {
+      print('Error in API call: $e');
+      throw e; // Re-throw the error for higher level handling
+    }
+  }
+
+  @override
+  Future<List<ProductDM>> getProduct() async {
+    Uri uri = Uri.parse(EndPoints.productsonhome);
+    try {
+      if (await internetConnectionChecker.hasConnection) {
+        Response response = await get(uri);
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          GetProductResponse getProductResponse = GetProductResponse.fromJson(jsonDecode(response.body));
+          if (getProductResponse.data != null) {
+            return getProductResponse.data!;
           } else {
             throw Constants.defaultErrorMessage!;
           }

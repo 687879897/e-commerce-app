@@ -10,8 +10,8 @@ class MainScreenState {
   static const List<Widget> defaultTabs = [
     HomeTab(),
     CategoriesTab(),
-    FAVTab(),
-    ProfileTab(),
+    FavTab(),
+    AllCatogries(),
   ];
   List<Widget> tabs;
   List<String> searchResults;

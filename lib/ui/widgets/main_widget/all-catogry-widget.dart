@@ -1,28 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:e_commerce_friday_c9/model/get-product-response.dart';
-import 'package:e_commerce_friday_c9/model/produect-details-model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import '../../../../../model/prouductresponse.dart';
 
 import '../../screen/mian/tabs/home/home_view_model.dart';
-import '../../screen/proudect-detials/proudect-details.dart';
 import '../../utils/app_assets.dart';
 import '../../utils/app_color.dart';
-import '../app-loader.dart'; // Ensure this import is correct
+import '../app-loader.dart';
 
-class Product extends StatefulWidget {
-  final ProductDM product;
+class AllCatogry extends StatefulWidget {
+  final Products product;
   final bool isincart;
 
-  const Product(this.product, {super.key, required this.isincart});
+  const AllCatogry(this.product, {super.key, required this.isincart});
 
   @override
-  State<Product> createState() => ProductState();
+  State<AllCatogry> createState() => AllCatogryState();
 }
 
-class ProductState extends State<Product> {
+class AllCatogryState extends State<AllCatogry> {
   bool isFavorite = false; // State to manage favorite status
+  bool isExpanded = false; // State to manage expanded/collapsed state
 
   void toggleFavorite() {
     setState(() {
@@ -33,31 +32,15 @@ class ProductState extends State<Product> {
     });
   }
 
-  late HomeViewModel viewModel = BlocProvider.of<HomeViewModel>(context);
+  late HomeViewModel viewModel = BlocProvider.of(context);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          ProductDetails.routeName,
-          arguments: ProductDetailsModel(
-            name: widget.product.title ?? "",
-            description: widget.product.description ?? "",
-            images: widget.product.images ?? [],
-            price: widget.product.price ?? 0,
-            rating: widget.product.ratingsAverage ?? 0,
-            stock: widget.product.ratingsQuantity ?? 0,
-            id: widget.product.id??" ",
-
-          ),
-        );
-      },
       child: Container(
-        padding: const EdgeInsets.all(6),
+        padding: const EdgeInsets.only(right: 12, left: 12, bottom: 6, top: 6),
         width: MediaQuery.of(context).size.width * .4,
-        margin: const EdgeInsets.all(6),
+        margin: const EdgeInsets.only(right: 12, left: 12, bottom: 6, top: 6),
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.lightBlue),
           borderRadius: BorderRadius.circular(12),
@@ -96,12 +79,12 @@ class ProductState extends State<Product> {
               style: const TextStyle(height: 1),
             ),
             const Spacer(),
-            Text("EGP ${widget.product.price}", style: const TextStyle(fontSize: 15)),
+            Text("EGP ${widget.product.price}", style: TextStyle(fontSize: 15)),
             Row(
               children: [
                 Text(
-                  "Review(${widget.product.ratingsAverage})",
-                  style: const TextStyle(fontSize: 11),
+                  "Review(${widget.product.rating})",
+                  style: TextStyle(fontSize: 11),
                 ),
                 const Icon(
                   Icons.star,
@@ -115,24 +98,15 @@ class ProductState extends State<Product> {
                   child: FloatingActionButton(
                     backgroundColor: AppColors.primaryColor,
                     onPressed: () {
-                      final productId = widget.product.id;
-                      if (productId == null) {
-                        // Handle null case, show a message or prevent the action
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Product ID is null')),
-                        );
-                        return;
-                      }
                       if (widget.isincart) {
-                        viewModel.removeproductfromcart(productId);
+                        viewModel.removeproductfromcart(widget.product.id as String);
                       } else {
-                        print("$productId");
-                        viewModel.addproducttocart(productId);
+                        viewModel.addproducttocart(widget.product.id as String);
                       }
                     },
-                    child: widget.isincart ? const Icon(Icons.minimize_outlined, color: Colors.white) : const Icon(Icons.add, color: Colors.white),
+                    child: widget.isincart ? Icon(Icons.minimize_outlined, color: Colors.white) : Icon(Icons.add, color: Colors.white),
                   ),
-                )
+                ),
               ],
             ),
           ],

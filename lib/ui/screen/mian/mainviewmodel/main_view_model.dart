@@ -12,9 +12,6 @@ class MainViewModel extends Cubit<MainScreenState> {
   void setcurrenttabindex(int newindex) {
     emit(state.copyWith(currentTabIndex: newindex));
   }
-
-
-
   Future<ProudecResponse> getProduct() async {
     CollectionReference collectionReference =
     FirebaseFirestore.instance.collection("fav");

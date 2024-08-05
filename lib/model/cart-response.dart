@@ -1,18 +1,17 @@
-
-
+import 'get-product-response.dart';
 import 'prouductresponse.dart';
 
-class getResponse {
+class CartResponse {
   String? status;
   int? numOfCartItems;
-  CartDM? data;
+  CartDm? data;
 
-  getResponse({this.status, this.numOfCartItems, this.data});
+  CartResponse({this.status, this.numOfCartItems, this.data});
 
-  getResponse.fromJson(Map<String, dynamic> json) {
+  CartResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     numOfCartItems = json['numOfCartItems'];
-    data = json['data'] != null ? new CartDM.fromJson(json['data']) : null;
+    data = json['data'] != null ? new CartDm.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -26,16 +25,16 @@ class getResponse {
   }
 }
 
-class CartDM {
+class CartDm {
   String? sId;
   String? cartOwner;
-  List<Products>? products;
+  List<CartProduectDeatils>? products;
   String? createdAt;
   String? updatedAt;
   int? iV;
   int? totalCartPrice;
 
-  CartDM(
+  CartDm(
       {this.sId,
         this.cartOwner,
         this.products,
@@ -44,14 +43,13 @@ class CartDM {
         this.iV,
         this.totalCartPrice});
 
-  CartDM.fromJson(Map<String, dynamic> json) {
+  CartDm.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     cartOwner = json['cartOwner'];
-    if (json['products'] != null) {
-      products = <Products>[];
-      json['products'].forEach((v) {
-        products!.add(new Products.fromJson(v));
-      });
+    if (json['products'] != null && json['products'] is List) {
+      products = (json['products'] as List).map((v) => CartProduectDeatils.fromJson(v)).toList();
+    } else {
+      products = [];
     }
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
@@ -60,82 +58,45 @@ class CartDM {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['cartOwner'] = this.cartOwner;
-    if (this.products != null) {
-      data['products'] = this.products!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = {};
+    data['_id'] = sId;
+    data['cartOwner'] = cartOwner;
+    if (products != null) {
+      data['products'] = products!.map((v) => v.toJson()).toList();
     }
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
-    data['__v'] = this.iV;
-    data['totalCartPrice'] = this.totalCartPrice;
+    data['createdAt'] = createdAt;
+    data['updatedAt'] = updatedAt;
+    data['__v'] = iV;
+    data['totalCartPrice'] = totalCartPrice;
     return data;
   }
 }
 
-
-class ProductDm {
-  List<Subcategory>? subcategory;
+class CartProduectDeatils {
+  int? count;
   String? sId;
-  String? title;
-  int? quantity;
-  String? imageCover;
-  Category? category;
-  Category? brand;
-  double? ratingsAverage;
-  String? id;
+  ProductDM? product;
+  int? price;
 
-  ProductDm(
-      {this.subcategory,
-        this.sId,
-        this.title,
-        this.quantity,
-        this.imageCover,
-        this.category,
-        this.brand,
-        this.ratingsAverage,
-        this.id});
+  CartProduectDeatils({this.count, this.sId, this.product, this.price});
 
-  ProductDm.fromJson(Map<String, dynamic> json) {
-    if (json['subcategory'] != null) {
-      subcategory = <Subcategory>[];
-      json['subcategory'].forEach((v) {
-        subcategory!.add(new Subcategory.fromJson(v));
-      });
-    }
+  CartProduectDeatils.fromJson(Map<String, dynamic> json) {
+    count = json['count'];
     sId = json['_id'];
-    title = json['title'];
-    quantity = json['quantity'];
-    imageCover = json['imageCover'];
-    category = json['category'] != null
-        ? new Category.fromJson(json['category'])
-        : null;
-    brand = json['brand'] != null ? new Category.fromJson(json['brand']) : null;
-    ratingsAverage = json['ratingsAverage'];
-    id = json['id'];
+    product = json['product'] != null ? ProductDM.fromJson(json['product']) : null;
+    price = json['price'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.subcategory != null) {
-      data['subcategory'] = this.subcategory!.map((v) => v.toJson()).toList();
-    }
-    data['_id'] = this.sId;
-    data['title'] = this.title;
-    data['quantity'] = this.quantity;
-    data['imageCover'] = this.imageCover;
-    if (this.category != null) {
-      data['category'] = this.category!.toJson();
-    }
-    if (this.brand != null) {
-      data['brand'] = this.brand!.toJson();
-    }
-    data['ratingsAverage'] = this.ratingsAverage;
-    data['id'] = this.id;
+    final Map<String, dynamic> data = {};
+    data['count'] = count;
+    data['_id'] = sId;
+    if (product != null) data['product'] = product!.toJson();
+    data['price'] = price;
     return data;
   }
 }
+
 
 class Subcategory {
   String? sId;
@@ -162,28 +123,6 @@ class Subcategory {
   }
 }
 
-class Category {
-  String? sId;
-  String? name;
-  String? slug;
-  String? image;
 
-  Category({this.sId, this.name, this.slug, this.image});
 
-  Category.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    name = json['name'];
-    slug = json['slug'];
-    image = json['image'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['slug'] = this.slug;
-    data['image'] = this.image;
-    return data;
-  }
-}
 

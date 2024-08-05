@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/catogry-response.dart';
+import '../app-loader.dart';
 
 
 class CategoryItem extends StatelessWidget {
@@ -19,9 +20,16 @@ class CategoryItem extends StatelessWidget {
           Spacer(),
           CircleAvatar(
             radius: 30,
-            backgroundImage: CachedNetworkImageProvider(
-              categoryDM.image ?? "",
+            child: CachedNetworkImage(
+              imageUrl: categoryDM.image??" ",
+              placeholder: (_, __) => const AppLoader(),
+              errorWidget: (_, __, ___) => const Icon(Icons.error),
+              width: double.infinity,
+              fit: BoxFit.cover,
+              height: MediaQuery.of(context).size.height * .16,
             ),
+
+
           ),
           Spacer(),
           Text(

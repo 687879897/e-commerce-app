@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../di.dart';
 import '../../../../../model/catogry-response.dart';
 
+import '../../../../../model/get-product-response.dart';
 import '../../../../../model/prouductresponse.dart';
 import '../../../../base/enums/base-screen-state.dart';
 import '../../../../utils/app_color.dart';
@@ -29,64 +30,69 @@ class _HomeTabState extends State<HomeTab> {
     super.initState();
   viewModel.loadCategory();
   viewModel.loadProduct();
+  viewModel.refreashcart();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView(
-        children: [
-          const SizedBox(height: 10),
-          buildslider(),
-          const SizedBox(height: 30),
-          const Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Row(
+    return BlocProvider(
+      create: (_)=>viewModel,
+      child: SafeArea(
+        child: ListView(
+          children: [
+            const SizedBox(height: 10),
+            buildslider(),
+            const SizedBox(height: 30),
+            const Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Row(
 
-              children: [Text("Catogry",style: TextStyle(color: AppColors.primaryColor),), Spacer(), Text("view all",style: TextStyle(color: AppColors.primaryColor))],
+                children: [Text("Catogry",style: TextStyle(color: AppColors.primaryColor),), Spacer(), Text("view all",style: TextStyle(color: AppColors.primaryColor))],
+              ),
             ),
-          ),
-          BlocBuilder<HomeViewModel, HomeState>(
-              bloc: viewModel,
-              builder: (context, state) {
-                if (state.catogrystate == BaseScreenState.success) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height * .3,
-                    child: buildCategoriesGridView(state.catogry!),
-                  );
-                } else if (state.catogrystate == BaseScreenState.failuer) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height * .3,
-                    child: ErrorView(message: state.categoryErrorMessage),
-                  );
-                } else {
-                  return LoadingWidget();
-                }
-              }),
-          const SizedBox(height: 15,),
-          const Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Text("Home Appliance",style: TextStyle(color: AppColors.primaryColor)),
-          ),
-          BlocBuilder<HomeViewModel, HomeState>(
-              bloc: viewModel,
-              builder: (context, state) {
-                if (state.productstate == BaseScreenState.success) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height * .3,
-                    child: buildProductsListView(state.product!),
-                  );
-                } else if (state.productstate == BaseScreenState.failuer) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height * .3,
-                    child: ErrorView(message: state.productErrorMessage),
-                  );
-                } else {
-                  return LoadingWidget();
-                }
-              }),
+            BlocBuilder<HomeViewModel, HomeState>(
+                bloc: viewModel,
+                builder: (context, state) {
+                  if (state.catogrystate == BaseScreenState.success) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * .3,
+                      child: buildCategoriesGridView(state.catogry!),
+                    );
+                  } else if (state.catogrystate == BaseScreenState.failuer) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * .3,
+                      child: ErrorView(message: state.categoryErrorMessage),
+                    );
+                  } else {
+                    return LoadingWidget();
+                  }
+                }),
+            const SizedBox(height: 15,),
+            const Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text("Home Appliance",style: TextStyle(color: AppColors.primaryColor)),
+            ),
+            BlocBuilder<HomeViewModel, HomeState>(
+                bloc: viewModel,
+                builder: (context, state) {
+                  if (state.productstate == BaseScreenState.success) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * .3,
+                      child: buildProductsListView(state.product!),
+                    );
+                  } else if (state.productstate == BaseScreenState.failuer) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height * .3,
+                      child: ErrorView(message: state.productErrorMessage),
+                    );
+                  } else {
+                    return LoadingWidget();
+                  }
+                }),
 
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -112,13 +118,13 @@ class _HomeTabState extends State<HomeTab> {
         });
   }
 
-  Widget buildProductsListView(List<Products> data) {
+  Widget buildProductsListView(List<ProductDM> data) {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: data.length,
         itemBuilder: (context, index) {
-          Products products=data[index];
-          return Product(products);
+          ProductDM products=data[index];
+          return Product(products, isincart: viewModel.isinCart(products.id??" "),);
         });
   }
 

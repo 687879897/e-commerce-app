@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import '../../../../../data/mainrepo/main-repo.dart';
 import '../../../../../model/brand-response.dart';
 import '../../../../../model/brandrespone.dart';
+import '../../../../../model/prouductresponse.dart';
 import '../../../../base/enums/base-screen-state.dart';
 import 'categories-state.dart';
 
@@ -39,5 +40,19 @@ class Brandviewmodel extends Cubit<BrandState> {
           brandErrorMessage: e.toString()));
     }
   }
+  Future<void> loadProduct() async {
+    emit(state.copyWith(brandState: BaseScreenState.loading));
+    try {
+      List<Products> product = await mainRepo.getprouduct();
+      emit(state.copyWith(
+          products: product, brandState: BaseScreenState.success));
+    } catch (e) {
+      emit(state.copyWith(
+          products: null,
+          brandState: BaseScreenState.failuer,
+          brandErrorMessage: e.toString()));
+    }
+  }
+
 
 }

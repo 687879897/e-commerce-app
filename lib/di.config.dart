@@ -22,14 +22,16 @@ import 'data/cartrepo/cart-repo-impl.dart' as _i16;
 import 'data/cartrepo/cart-repo.dart' as _i15;
 import 'data/mainrepo/main-repo-impl.dart' as _i7;
 import 'data/mainrepo/main-repo.dart' as _i6;
-import 'third_party_packegs_modul.dart' as _i20;
+import 'third_party_packegs_modul.dart' as _i22;
 import 'ui/base/base-state/base-state.dart' as _i3;
 import 'ui/base/enums/base-screen-state.dart' as _i4;
-import 'ui/screen/auth/login/login-view-model.dart' as _i18;
-import 'ui/screen/auth/register/register-view-model.dart' as _i19;
+import 'ui/screen/auth/login/login-view-model.dart' as _i19;
+import 'ui/screen/auth/register/register-view-model.dart' as _i21;
+import 'ui/screen/cartscreen/cart-view-model.dart' as _i17;
 import 'ui/screen/mian/mainviewmodel/main_view_model.dart' as _i8;
 import 'ui/screen/mian/tabs/categories/categories-viewmodel.dart' as _i14;
-import 'ui/screen/mian/tabs/home/home_view_model.dart' as _i17;
+import 'ui/screen/mian/tabs/home/home_view_model.dart' as _i18;
+import 'ui/screen/proudect-detials/product-deatils-view-model.dart' as _i20;
 import 'utilis/sherd-perfrance/sherd-prefrance.dart' as _i9;
 
 extension GetItInjectableX on _i1.GetIt {
@@ -64,16 +66,20 @@ extension GetItInjectableX on _i1.GetIt {
         () => _i14.Brandviewmodel(gh<_i6.MainRepo>()));
     gh.singleton<_i15.CartRepo>(
         () => _i16.CartRepoImpl(gh<_i9.SharedPreference>()));
-    gh.factory<_i17.HomeViewModel>(() => _i17.HomeViewModel(
+    gh.factory<_i17.CartViewModel>(
+        () => _i17.CartViewModel(gh<_i15.CartRepo>()));
+    gh.factory<_i18.HomeViewModel>(() => _i18.HomeViewModel(
           gh<_i6.MainRepo>(),
           gh<_i15.CartRepo>(),
         ));
-    gh.factory<_i18.LoginViewModel>(
-        () => _i18.LoginViewModel(gh<_i12.AuthRepo>()));
-    gh.factory<_i19.RegisterViewModel>(
-        () => _i19.RegisterViewModel(gh<_i12.AuthRepo>()));
+    gh.factory<_i19.LoginViewModel>(
+        () => _i19.LoginViewModel(gh<_i12.AuthRepo>()));
+    gh.factory<_i20.ProductDateilsViewModel>(
+        () => _i20.ProductDateilsViewModel(gh<_i15.CartRepo>()));
+    gh.factory<_i21.RegisterViewModel>(
+        () => _i21.RegisterViewModel(gh<_i12.AuthRepo>()));
     return this;
   }
 }
 
-class _$ThirdPartyPackegsModul extends _i20.ThirdPartyPackegsModul {}
+class _$ThirdPartyPackegsModul extends _i22.ThirdPartyPackegsModul {}

@@ -1,17 +1,21 @@
+
+import '../../../../../model/cart-response.dart';
 import '../../../../../model/catogry-response.dart';
+import '../../../../../model/get-product-response.dart';
 import '../../../../../model/prouductresponse.dart';
 import '../../../../base/enums/base-screen-state.dart';
 import '../../../../utils/app_assets.dart';
 
 class HomeState {
-  static const List<String> defaultAds = [AppAssets.ads, AppAssets.ads, AppAssets.ads];
+  static const List<String> defaultAds = AppAssets.ads;
   final List<String> ads;
   final BaseScreenState catogrystate;
   final List<CatogryDM>? catogry;
-  final List<Products>? product;
+  final List<ProductDM>? product;
   final String categoryErrorMessage;
   final String productErrorMessage;
   final BaseScreenState productstate;
+  final CartDm? cartDm;
 
   HomeState({
     this.ads = defaultAds,
@@ -21,16 +25,18 @@ class HomeState {
     this.categoryErrorMessage = '',
     this.productErrorMessage = '',
     this.productstate = BaseScreenState.loading,
+    this.cartDm,
   });
 
   HomeState copyWith({
     List<String>? ads,
     BaseScreenState? catogrystate,
     List<CatogryDM>? catogry,
-    List<Products>? product,
+    List<ProductDM>? product,
     String? categoryErrorMessage,
     String? productErrorMessage,
     BaseScreenState? productstate,
+    CartDm? cartDm,
   }) {
     return HomeState(
       ads: ads ?? this.ads,
@@ -40,6 +46,7 @@ class HomeState {
       categoryErrorMessage: categoryErrorMessage ?? this.categoryErrorMessage,
       productErrorMessage: productErrorMessage ?? this.productErrorMessage,
       productstate: productstate ?? this.productstate,
+      cartDm: cartDm??this.cartDm
     );
   }
 }

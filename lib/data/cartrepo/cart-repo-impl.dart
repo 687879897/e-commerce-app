@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import '../../model/cart-response.dart';
@@ -13,7 +12,7 @@ import 'cart-repo.dart';
 class CartRepoImpl extends CartRepo{
   SharedPreference sherdPrefrance;
 
-   StreamController<CartDM>streamController=StreamController();
+   StreamController<CartDm>streamController=StreamController.broadcast();
    CartRepoImpl(this.sherdPrefrance);
 
 
@@ -37,12 +36,12 @@ class CartRepoImpl extends CartRepo{
   }
 
   @override
-  Future<CartDM> getcart()async {
+  Future<CartDm> getcart()async {
     Uri uri=Uri.parse(EndPoints.cart);
     Response response = await get(uri,headers: {
       "token":(await sherdPrefrance.getToken())!
     });
-    getResponse myrsponse=getResponse.fromJson(jsonDecode(response.body));
+    CartResponse myrsponse=CartResponse.fromJson(jsonDecode(response.body));
     if(response.statusCode<=300&&response.statusCode>=200&&myrsponse.data!=null){
       streamController.add(myrsponse.data!);
       return myrsponse.data!;
@@ -68,6 +67,34 @@ class CartRepoImpl extends CartRepo{
   }
 
   @override
-  Stream<CartDM> getstream() =>streamController.stream;
+  Stream<CartDm> getstream() =>streamController.stream;
 
+  @override
+  Future<void> updatecart(String id, int count) async {
+    Uri uri = Uri.parse("${EndPoints.cart}/$id");
+    Map<String, dynamic> body = {
+      "count": count,
+    };
+
+    final token = await sherdPrefrance.getToken();
+    final response = await put(
+      uri,
+      headers: {
+        "Content-Type": "application/json",
+        "token": token!,
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      // Optionally, parse and handle the response data
+      // var responseData = jsonDecode(response.body);
+
+      // Call the function to refresh the cart
+      getcart();
+    } else {
+      // Handle specific error codes if needed
+      throw Exception('Failed to update cart: ${response.statusCode}');
+    }
+}
 }

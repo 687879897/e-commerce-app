@@ -1,3 +1,4 @@
+import 'package:e_commerce_friday_c9/ui/screen/cartscreen/cart-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,54 +34,55 @@ class _MainState extends State<Main> {
         return Scaffold(
           body: Column(
             children: [
-              const SizedBox(height: 70,),
-              if (state.currentTabIndex != 3) ...[
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 14),
-                        child: TextField(
-                          controller: searchController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(40.0),
-                              borderSide: const BorderSide(
-                                width: 0.5,
-                                color: Colors.white,
-                              ),
-                            ),
-                            hintText: "What do you search for?",
-                            hintStyle: const TextStyle(
-                                color: AppColors.primaryColor, fontSize: 16),
-                            prefixIcon: IconButton(
-                              onPressed: () {
-
-                              },
-                              icon: const Icon(
-                                Icons.search,
-                                color: AppColors.primaryColor,
-                                size: 30,
-                              ),
+              const SizedBox(height: 60,),
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 14),
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(40.0),
+                            borderSide: const BorderSide(
+                              width: 0.5,
+                              color: Colors.white,
                             ),
                           ),
-                          style: const TextStyle(
-                            color: AppColors.primaryColor, // Change this to your desired color
+                          hintText: "What do you search for?",
+                          hintStyle: const TextStyle(
+                              color: AppColors.primaryColor, fontSize: 16),
+                          prefixIcon: IconButton(
+                            onPressed: () {},
+                            icon: const Icon(
+                              Icons.search,
+                              color: AppColors.primaryColor,
+                              size: 30,
+                            ),
                           ),
+                        ),
+                        style: const TextStyle(
+                          color: AppColors.primaryColor,
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 12.0, right: 8.0),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 12.0, right: 8.0),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, CartScreen.routeName);
+                      },
                       child: Icon(
                         Icons.shopping_cart_outlined,
                         color: AppColors.primaryColor,
                         size: 25,
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
               if (state.searchResults.isNotEmpty)
                 Expanded(
                   child: ListView.builder(
@@ -120,7 +122,7 @@ class _MainState extends State<Main> {
     );
   }
 
-  buildBottomNavIcon(String asset, bool selected) {
+  BottomNavigationBarItem buildBottomNavIcon(String asset, bool selected) {
     return BottomNavigationBarItem(
         icon: selected
             ? CircleAvatar(

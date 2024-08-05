@@ -1,6 +1,6 @@
 abstract class AppAssets{
   static const String splash = "assets/images/splash.jpg";
-  static const String ads = "assets/images/ads.png";
+  static const List<String> ads = ["assets/images/ads.png","assets/images/ads1.png","assets/images/ads2.png"];
   static const String routeLogo = "assets/images/route_logo.png";
   static const String icHome = "assets/images/ic_home.png";
   static const String icFav = "assets/images/ic_fav.png";
