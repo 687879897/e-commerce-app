@@ -1,10 +1,9 @@
-import 'package:e_commerce_friday_c9/ui/screen/cartscreen/cart-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../di.dart';
 import '../../utils/app_assets.dart';
 import '../../utils/app_color.dart';
+import '../cartscreen/cart-screen.dart';
 import 'mainviewmodel/main-view-model-state.dart';
 import 'mainviewmodel/main_view_model.dart';
 
@@ -24,6 +23,8 @@ class _MainState extends State<Main> {
   @override
   void initState() {
     super.initState();
+    searchController.addListener(() {
+    });
   }
 
   @override
@@ -69,7 +70,7 @@ class _MainState extends State<Main> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 12.0, right: 8.0),
+                    padding: const EdgeInsets.only(left: 12.0, right: 8.0),
                     child: InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, CartTab.routeName);
