@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../cartscreen/cart-screen.dart';
 import '../tabs/categories/categories_tab.dart';
 import '../tabs/fav/fav_tab.dart';
 import '../tabs/home/home_tab.dart';
-import '../tabs/profile/profile_tab.dart';
 
 class MainScreenState {
   int currentTabIndex;
@@ -11,7 +11,7 @@ class MainScreenState {
     HomeTab(),
     CategoriesTab(),
     FavTab(),
-    AllCatogries(),
+    CartTab(),
   ];
   List<Widget> tabs;
   List<String> searchResults;

@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         Register.routeName: (_) => Register(),
         Main.routeName: (_) => Main(),
         ProductDetails.routeName: (_) => ProductDetails(),
-        CartScreen.routeName:(_)=>CartScreen(),
+        CartTab.routeName:(_)=>CartTab(),
 
       },
       initialRoute: SplashScreen.routeName,

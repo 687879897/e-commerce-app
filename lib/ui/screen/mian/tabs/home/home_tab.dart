@@ -31,6 +31,7 @@ class _HomeTabState extends State<HomeTab> {
   viewModel.loadCategory();
   viewModel.loadProduct();
   viewModel.refreashcart();
+  viewModel.refreashwatchlist();
 
   }
 
@@ -124,7 +125,7 @@ class _HomeTabState extends State<HomeTab> {
         itemCount: data.length,
         itemBuilder: (context, index) {
           ProductDM products=data[index];
-          return Product(products, isincart: viewModel.isinCart(products.id??" "),);
+          return Product(products, isInCart: viewModel.isinCart(products.id??" "), isFav: viewModel.isinwatchlist(products.id??" "),);
         });
   }
 

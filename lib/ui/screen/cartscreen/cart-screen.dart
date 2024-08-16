@@ -5,16 +5,16 @@ import 'package:e_commerce_friday_c9/ui/screen/cartscreen/cart-state.dart';
 import 'package:e_commerce_friday_c9/ui/screen/cartscreen/cart-view-model.dart';
 import '../../utils/app_color.dart';
 
-class CartScreen extends StatefulWidget {
+class CartTab extends StatefulWidget {
   static String routeName = "cart";
 
-  const CartScreen({super.key});
+  const CartTab({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CartTab> createState() => _CartTabState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartTabState extends State<CartTab> {
   late CartViewModel viewModel;
 
   @override
@@ -27,36 +27,6 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Cart",
-          style: TextStyle(
-              color: AppColors.primaryColor,
-              fontWeight: FontWeight.normal,
-              fontSize: 20),
-        ),
-        centerTitle: true,
-        actions: [
-          Icon(
-            Icons.search,
-            size: 30,
-            color: AppColors.primaryColor,
-          ),
-          SizedBox(
-            width: 15,
-          ),
-          Icon(Icons.shopping_cart_outlined,
-              size: 30, color: AppColors.primaryColor)
-        ],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: AppColors.primaryColor),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        backgroundColor: AppColors.whiteColor,
-        elevation: 0,
-      ),
       body: Column(
         children: [
           Expanded(child: buildCart()),

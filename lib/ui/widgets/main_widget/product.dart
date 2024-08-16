@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_friday_c9/model/get-product-response.dart';
 import 'package:e_commerce_friday_c9/model/produect-details-model.dart';
+import 'package:e_commerce_friday_c9/ui/screen/mian/tabs/fav/fav-view-model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,46 +12,30 @@ import '../../utils/app_assets.dart';
 import '../../utils/app_color.dart';
 import '../app-loader.dart'; // Ensure this import is correct
 
-class Product extends StatefulWidget {
+class Product extends StatelessWidget {
   final ProductDM product;
-  final bool isincart;
+  final bool isInCart;
+  final bool isFav;
 
-  const Product(this.product, {super.key, required this.isincart});
-
-  @override
-  State<Product> createState() => ProductState();
-}
-
-class ProductState extends State<Product> {
-  bool isFavorite = false; // State to manage favorite status
-
-  void toggleFavorite() {
-    setState(() {
-      isFavorite = !isFavorite;
-      if (isFavorite) {
-        // Handle favorite action
-      }
-    });
-  }
-
-  late HomeViewModel viewModel = BlocProvider.of<HomeViewModel>(context);
+  const Product(this.product, {Key? key, required this.isInCart, required this.isFav}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.read<HomeViewModel>();
+
     return InkWell(
       onTap: () {
         Navigator.pushNamed(
           context,
           ProductDetails.routeName,
           arguments: ProductDetailsModel(
-            name: widget.product.title ?? "",
-            description: widget.product.description ?? "",
-            images: widget.product.images ?? [],
-            price: widget.product.price ?? 0,
-            rating: widget.product.ratingsAverage ?? 0,
-            stock: widget.product.ratingsQuantity ?? 0,
-            id: widget.product.id??" ",
-
+            name: product.title ?? "",
+            description: product.description ?? "",
+            images: product.images ?? [],
+            price: product.price ?? 0,
+            rating: product.ratingsAverage ?? 0,
+            stock: product.ratingsQuantity ?? 0,
+            id: product.id ?? "",
           ),
         );
       },
@@ -69,7 +54,7 @@ class ProductState extends State<Product> {
               alignment: Alignment.topRight,
               children: [
                 CachedNetworkImage(
-                  imageUrl: widget.product.images?.isNotEmpty == true ? widget.product.images![0] : " ",
+                  imageUrl: product.images?.isNotEmpty == true ? product.images![0] : " ",
                   placeholder: (_, __) => const AppLoader(),
                   errorWidget: (_, __, ___) => const Icon(Icons.error),
                   width: double.infinity,
@@ -80,27 +65,39 @@ class ProductState extends State<Product> {
                   top: 0,
                   right: 0,
                   child: IconButton(
-                    icon: Image.asset(
-                      isFavorite ? AppAssets.truefave : AppAssets.falsefave,
-                    ),
-                    onPressed: toggleFavorite,
+                    icon: Image.asset(isFav ? AppAssets.truefave : AppAssets.falsefave),
+                    onPressed: () {
+                      final productId = product.id;
+                      if (productId == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Product ID is null')),
+                        );
+                        return;
+                      }
+
+                      if (isFav) {
+                        viewModel.removeproductfromwatchlist(productId);
+                      } else {
+                        viewModel.addproducttowatchlist(productId);
+                      }
+                    },
                   ),
                 ),
               ],
             ),
             const Spacer(),
             Text(
-              widget.product.title ?? "",
+              product.title ?? "",
               textAlign: TextAlign.start,
               maxLines: 2,
               style: const TextStyle(height: 1),
             ),
             const Spacer(),
-            Text("EGP ${widget.product.price}", style: const TextStyle(fontSize: 15)),
+            Text("EGP ${product.price}", style: const TextStyle(fontSize: 15)),
             Row(
               children: [
                 Text(
-                  "Review(${widget.product.ratingsAverage})",
+                  "Review (${product.ratingsAverage})",
                   style: const TextStyle(fontSize: 11),
                 ),
                 const Icon(
@@ -115,22 +112,22 @@ class ProductState extends State<Product> {
                   child: FloatingActionButton(
                     backgroundColor: AppColors.primaryColor,
                     onPressed: () {
-                      final productId = widget.product.id;
+                      final productId = product.id;
                       if (productId == null) {
-                        // Handle null case, show a message or prevent the action
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Product ID is null')),
+                          const SnackBar(content: Text('Product ID is null')),
                         );
                         return;
                       }
-                      if (widget.isincart) {
+                      if (isInCart) {
                         viewModel.removeproductfromcart(productId);
                       } else {
-                        print("$productId");
                         viewModel.addproducttocart(productId);
                       }
                     },
-                    child: widget.isincart ? const Icon(Icons.minimize_outlined, color: Colors.white) : const Icon(Icons.add, color: Colors.white),
+                    child: isInCart
+                        ? const Icon(Icons.minimize_outlined, color: Colors.white)
+                        : const Icon(Icons.add, color: Colors.white),
                   ),
                 )
               ],

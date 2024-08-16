@@ -332,7 +332,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           onPressed: () {
                             viewModel.addproducttocart(product.id);
                             viewModel.updatecount(product.id, count);
-                            Navigator.pushNamed(context, CartScreen.routeName);
+                            Navigator.pushNamed(context, CartTab.routeName);
 
                           },
                           color: AppColors.primaryColor,

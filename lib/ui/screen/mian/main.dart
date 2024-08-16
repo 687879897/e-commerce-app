@@ -72,7 +72,7 @@ class _MainState extends State<Main> {
                     padding: EdgeInsets.only(left: 12.0, right: 8.0),
                     child: InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, CartScreen.routeName);
+                        Navigator.pushNamed(context, CartTab.routeName);
                       },
                       child: Icon(
                         Icons.shopping_cart_outlined,
@@ -113,7 +113,7 @@ class _MainState extends State<Main> {
                 buildBottomNavIcon(AppAssets.icHome, state.currentTabIndex == 0),
                 buildBottomNavIcon(AppAssets.icCategories, state.currentTabIndex == 1),
                 buildBottomNavIcon(AppAssets.icFav, state.currentTabIndex == 2),
-                buildBottomNavIcon(AppAssets.icProfile, state.currentTabIndex == 3),
+                buildBottomNavIcon(AppAssets.icmark, state.currentTabIndex == 3),
               ],
             ),
           ),

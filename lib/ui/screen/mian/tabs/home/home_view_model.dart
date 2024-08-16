@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../../../../../data/cartrepo/cart-repo.dart';
 import '../../../../../data/mainrepo/main-repo.dart';
+import '../../../../../data/watchlistrepo/watchlist-repo.dart';
 import '../../../../../model/cart-response.dart';
 import '../../../../../model/catogry-response.dart';
 import '../../../../../model/get-product-response.dart';
 import '../../../../../model/prouductresponse.dart';
+import '../../../../../model/watchlist-response.dart';
 import '../../../../base/enums/base-screen-state.dart';
 import 'home-state.dart';
 
@@ -14,10 +16,13 @@ import 'home-state.dart';
 class HomeViewModel extends Cubit<HomeState> {
   final MainRepo mainRepo;
   final CartRepo cartRepo;
+  WatchListRepo watchlistrepo;
 
 
-  HomeViewModel(this.mainRepo, this.cartRepo) : super(HomeState()){
+
+  HomeViewModel(this.mainRepo, this.cartRepo,this.watchlistrepo) : super(HomeState()){
     listentoChanges();
+    listentoChangesinwatchlist();
   }
 
   Future<void> loadCategory() async {
@@ -83,5 +88,35 @@ class HomeViewModel extends Cubit<HomeState> {
   }
   void addproducttocart(String id){
     cartRepo.addtocart(id);
+  }
+  listentoChangesinwatchlist(){
+    watchlistrepo.getstream().listen((watchlist) {
+      emit(state.copyWith(watchList:watchlist));
+    });
+  }
+  bool isinwatchlist(String produectid){
+    for(WatchListDm product in state.watchList??[]){
+      if(produectid==product.id){
+        print("product id is submit:$produectid");
+        print("product id is orignal:${product.id}");
+
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  void refreashwatchlist() {
+    watchlistrepo.getwatchlist();
+    print("${state.watchList}");
+  }
+  void removeproductfromwatchlist(String id){
+
+    watchlistrepo.removefromwatchlist(id);
+  }
+  void addproducttowatchlist(String id){
+    watchlistrepo.addtowatchlist(id);
+    print("product id is submit:$id");
   }
 }
